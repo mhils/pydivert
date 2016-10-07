@@ -434,9 +434,6 @@ class Handle(object):
 
         For more info on the C call visit: http://reqrypt.org/windivert-doc.html#divert_recv_ex
         """
-        if not hasattr(self._lib, "WinDivertRecvEx"):
-            raise MethodUnsupportedException("Async receive is not supported with this version of WinDivert")
-
         future = FuturePacket(self._handle, callback=callback, bufsize=bufsize)
 
         retcode = self._lib.WinDivertRecvEx(self._handle, byref(future.packet), sizeof(future.packet), 0,
@@ -470,9 +467,6 @@ class Handle(object):
 
         For more info on the C call visit: http://reqrypt.org/windivert-doc.html#divert_send_ex
         """
-        if not hasattr(self._lib, "WinDivertSendEx"):
-            raise MethodUnsupportedException("Async send is not supported with this version of WinDivert")
-
         data, address = self.__parse_send_args(*args)
         send_len = len(data)
         retcode = self._lib.WinDivertSendEx(self._handle, data, send_len, 0, byref(address), None, None)
